@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 $dsn = "mysql:host=mysql145.phy.lolipop.lan; dbname=LAA1126384-syutoito; charset=utf8mb4";
 $username = "LAA1126384";
 $password = "sitositosito111";
