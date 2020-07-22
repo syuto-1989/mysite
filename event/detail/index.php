@@ -41,17 +41,17 @@ include("../../common/php/header.php")?>
 
                             //データ取得
                             $stmt = $dbh->prepare("SELECT * FROM `AFC_ticket` WHERE id = :id");
-														$stmt->bindValue(':id', $_GET['id']);
-														$stmt->execute();
+			    $stmt->bindValue(':id', $_GET['id']);
+			    $stmt->execute();
                             while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
                               $id = $row['id'];
                               $date = str_replace(array('-', '-'), array('年', '月'), $row['date']) . '日';
                               $event = $row['event'];
                               $price = $row['price'];
                               if(!empty($row['img'])){
-																	$image = '<img src="../../manage/event/register/images/'.$row['img'].'">';
+				$image = '<img src="../../manage/event/register/images/'.$row['img'].'">';
                               } else{
-																	$image = '<img src="../../manage/event/register/images/no-img.png">';
+				$image = '<img src="../../manage/event/register/images/no-img.png">';
                               }
                               echo '<div class="event-block">
                                       <div class="img-box">'.$image.'</div>
