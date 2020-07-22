@@ -48,6 +48,70 @@ function getReserveEvent($master_data_ay, $value)
     //print $html;
 }
 
+//年配列
+function mkYearAy(){
+$year_ay = array();
+$year_ay[0] = date("Y");
+for($i=1;$i<10;$i++){
+    $year_count = $i.' year';
+    $year_ay[$i] = date("Y", strtotime($year_count));;
+}
+    return $year_ay;
+}
+
+//月配列
+function mkMonthAy(){
+	$month_ay = array();
+
+	for($i=1;$i<13;$i++){
+		$month_ay[$i] = $i;
+	}
+
+	return $month_ay;
+}
+
+//日配列
+function mkDayAy(){
+	$day_ay = array();
+
+	for($i=1;$i<32;$i++){
+		$day_ay[$i] = $i;
+	}
+
+	return $day_ay;
+}
+
+/* 配列作成 */
+$year_ay = mkYearAy();
+$month_ay = mkMonthAy();
+$day_ay = mkDayAy();
+
+$year = getReserveEvent($year_ay, $year);
+$create_date = date('Y-m-d H:i:s');
+if(mb_strlen($month) == 1){
+    $month = '0' .$month;
+}
+if(mb_strlen($day) == 1){
+    $month = '0' .$day;
+}
+$date = $year. '-' .$month. '-' .$day;
+
+
+// INSERT
+$sql = "INSERT INTO AFC_ticket (
+	date, event, price, create_date
+) VALUES (
+	'$date', '$event', '$price', '$create_date'
+)";
+$res = $mysqli->query($sql);
+if (!$res) {
+    echo 'system error.';
+    exit(1);
+}
+
+$mysqli->close();
+header("location:./index.php");
+
 //--------ページ設定--------//
 	$ttl = "";
 	$dec = "";
@@ -79,10 +143,6 @@ include("../common/php/header.php")?>
                 <tr>
                     <td>予約公演</td>
                     <td><?php print getReserveEvent($ticket_ay, $reserve_ticket); ?></td>
-                </tr>
-                <tr>
-                    <td>予約枚数</td>
-                    <td><?php echo $sheets; ?>枚</td>
                 </tr>
                 <tr>
                     <td>問い合わせ内容</td>
