@@ -20,12 +20,21 @@ if (isset($_SESSION['email'])) {
   exit;
 }
 
+//DB接続
+$mysqli = new mysqli('mysql145.phy.lolipop.lan', 'LAA1126384', 'sitositosito111', 'LAA1126384-syutoito');
+if ($mysqli->connect_error) {
+    echo $mysqli->connect_error;
+    exit();
+} else {
+    $mysqli->set_charset("utf8");
+}
+
 
 if (isset($_POST["reg"])) {
 
-    
+
 	$error_ay = array();
-    
+
 	if ($year == "") {
 		$error_ay["year"] = "<span class='console'>選択してください</span>";
 	}
@@ -33,19 +42,72 @@ if (isset($_POST["reg"])) {
 	if ($month == "") {
 		$error_ay["month"] = "<span class='console'>選択してください</span>";
 	}
-    
+
     if ($day == "") {
 		$error_ay["day"] = "<span class='console'>選択してください</span>";
 	}
-    
+
 
 	if ($event == "") {
 		$error_ay["event"] = "<span class='console'>入力してください</span>";
 	}
-    
+
     if ($price == "") {
 		$error_ay["price"] = "<span class='console'>入力してください</span>";
 	}
+
+  if(!empty($id)){
+      //編集の場合
+      $sql = "SELECT * FROM `AFC_ticket` WHERE id = $id";
+      $rst = $mysqli->query($sql);
+      if (!$rst) {
+          echo 'system error.' . $mysqli->error;
+          exit(1);
+      }
+      //画像更新しない場合
+      if(empty($_FILES['image'])){
+        while ($row = $rst->fetch_assoc()) {
+            $image = $row['img'];
+            $_SESSION['image'] = $image;
+        }
+      } else {
+        //画像更新する場合
+        $sql = "SELECT * FROM `AFC_ticket` WHERE id = $id";
+        $rst = $mysqli->query($sql);
+        if (!$rst) {
+            echo 'system error.' . $mysqli->error;
+            exit(1);
+        }
+
+        while ($row = $rst->fetch_assoc()) {
+          //既に画像が登録されている場合は、一旦削除
+          if(!empty($row['img'])){
+            $old_image = $row['img'];
+            $old_file = "./images/$old_image";
+            unlink($old_file);
+          }
+        }
+
+        //画像処理
+        $image = uniqid(mt_rand(), true);//ファイル名をユニーク化
+        $image .= '.' . substr(strrchr($_FILES['image']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
+        $file = "./images/$image";
+        if ($_FILES['image']['size'] > 1000000) {
+            $error_ay["size"] = "<span class='console'>ファイルが大きすぎます</span>";
+        }
+        if (!empty($_FILES['image']['name'])) {//ファイルが選択されていれば$imageにファイル名を代入
+            move_uploaded_file($_FILES['image']['tmp_name'], './images/' . $image);//imagesディレクトリにファイル保存
+                if (exif_imagetype($file)) {//画像ファイルかのチェック
+                    //$_SESSIONに$_POSTの値を入れる
+                    $_SESSION['image'] = $image;
+                } else {
+                    $error_ay["image"] = "<span class='console'>画像ファイルではありません</span>";
+                    unlink($file);
+                }
+            }
+      }
+  } else {
+
     //画像処理
     $image = uniqid(mt_rand(), true);//ファイル名をユニーク化
     $image .= '.' . substr(strrchr($_FILES['image']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
@@ -63,7 +125,7 @@ if (isset($_POST["reg"])) {
                 unlink($file);
             }
         }
-
+      }
 	if (empty($error_ay)) {
 		//$_SESSIONに$_POSTの値を入れる
         $_SESSION['year'] = $year;
@@ -71,7 +133,7 @@ if (isset($_POST["reg"])) {
         $_SESSION['day'] = $day;
         $_SESSION['event'] = $event;
         $_SESSION['price'] = $price;
-        
+
         if(empty($id)){
         //新規の場合
 		  header("location:./register.php");
@@ -83,15 +145,6 @@ if (isset($_POST["reg"])) {
 
 
 
-}
-
-//DB接続
-$mysqli = new mysqli('mysql145.phy.lolipop.lan', 'LAA1126384', 'sitositosito111', 'LAA1126384-syutoito');
-if ($mysqli->connect_error) {
-    echo $mysqli->connect_error;
-    exit();
-} else {
-    $mysqli->set_charset("utf8");
 }
 
 //データ取得
@@ -113,8 +166,6 @@ if(!empty($id)){
         $price = $row['price'];
         $image = $row['img'];
     }
-
- 
 }else{
     //新規の場合
     $sql = "SELECT * FROM `AFC_ticket` ORDER BY `AFC_ticket`.`date` ASC LIMIT 0 , 30";
@@ -123,7 +174,7 @@ if(!empty($id)){
     echo 'system error.' . $mysqli->error;
     exit(1);
     }
-    
+
 }
 
 
@@ -288,4 +339,3 @@ include("../../common/php/header.php")?>
 
 
 </main>
-
