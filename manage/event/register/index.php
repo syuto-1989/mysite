@@ -64,8 +64,9 @@ if (isset($_POST["reg"])) {
           echo 'system error.' . $mysqli->error;
           exit(1);
       }
+
       //画像更新しない場合
-      if(empty($_FILES['image'])){
+      if(empty($_FILES['image']["name"])){
         while ($row = $rst->fetch_assoc()) {
             $image = $row['img'];
             $_SESSION['image'] = $image;
