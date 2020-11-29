@@ -28,16 +28,41 @@ class ExtraHolidaySettingController extends Controller
 			"calendar" => $calendar
 		]);
 	}
+    public function edit($date_key){
+    $date_setings = [];
+    $comment = '';
+    $date_flag = '';
+    $date = ExtraHoliday::select('date_key')->get();
+        foreach($date as $key=>$value) {
+            if($date_key == $value['date_key']){
+                $date_setings = ExtraHoliday::where('date_key', $date_key)->first();
+                $comment = $date_setings->comment;
+                $date_flag = $date_setings->date_flag;
+            }
+        }
+                  
+
+		return view('calendar/extra_holiday_setting_edit', [
+			//"calendar" => $calendar,
+            "date_key" => $date_key,
+            "date_setings" => $date_setings,
+            "comment" => $comment,
+            "date_flag" => $date_flag
+		]);
+	}
     
     
     public function update(Request $request){
 		$input = $request->get("extra_holiday");
 		$ym = $request->input("ym");
 		$date = $request->input("date");
-		
+		$date_key = $request['date_key'];
+            
 		ExtraHoliday::updateExtraHolidayWithMonth($ym, $input);
-		return redirect()
-			->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@form")
-			->withStatus("保存しました");
+		return redirect(route('edit_extra_holiday_setting', [
+                    'date_key' => $date_key,
+                ]));
+			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
+			//->withStatus("保存しました");
 	}
 }

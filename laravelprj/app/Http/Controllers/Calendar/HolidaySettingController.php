@@ -16,6 +16,16 @@ class HolidaySettingController extends Controller
 			"FLAG_CLOSE" => HolidaySetting::CLOSE
 		]);
 	}
+    function edit(){
+		
+		//取得
+		$setting = HolidaySetting::firstOrNew();
+		return view("calendar/holiday_setting_edit", [
+			"setting" => $setting,
+			"FLAG_OPEN" => HolidaySetting::OPEN,
+			"FLAG_CLOSE" => HolidaySetting::CLOSE
+		]);
+	}
 	function update(Request $request){
 		//取得
 		$setting = HolidaySetting::firstOrNew();

@@ -27,6 +27,7 @@ class CalendarOutputView extends CalendarView {
 		}
 
 		$html[] = '<td class="'.$day->getClassName().'">';
+        $html[] = '<a href="/extra_holiday_setting/edit/'.$day->getDateKey().'">';
 		$html[] = $day->render();
 
         //コメントを表示
@@ -34,7 +35,8 @@ class CalendarOutputView extends CalendarView {
 			$html[] = '<p class="comment">' . e($extraHoliday->comment) . '</p>';
 		}
 
-		$html[] = '</td>';
+		$html[] = '</a>';
+        $html[] = '</td>';
 
 		return implode("", $html);
 	}
