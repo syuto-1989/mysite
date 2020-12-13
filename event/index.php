@@ -13,6 +13,12 @@ try {
 } catch (PDOException $e) {
     $msg = $e->getMessage();
 }
+//データ取得
+$stmt = $dbh->query("SELECT COUNT( * ) AS all_data_length FROM `AFC_ticket`");
+while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+    $all_data_length = $row['all_data_length'];
+}
+
 
 
 //--------ページ設定--------//
@@ -23,10 +29,23 @@ try {
 //-----------------------//
 
 include("../common/php/header.php")?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <link rel="stylesheet" href="./style/css/local.css">
 <link rel="stylesheet" href="./style/css/local-sp.css">
 
 
+<style>
+button#ajax_show {
+    width: 30%;
+    background: #fff;
+    color: #000;
+    padding: 5px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    display: block;
+    margin: auto;
+}
+</style>    
 <main>
 <section id="top">
     <div class="content-wrap">
@@ -36,11 +55,11 @@ include("../common/php/header.php")?>
               <p>チケット予約は予約ボタンをクリックしてください。</p>
           </div>
             <form action="/contact/" method="post">
-                <div class="flex">
+                <div id="event" class="flex">
                         <?php
 
                             //データ取得
-                            $stmt = $dbh->query("SELECT * FROM `AFC_ticket` ORDER BY `AFC_ticket`.`date` ASC LIMIT 0 , 30");
+                            $stmt = $dbh->query("SELECT * FROM `AFC_ticket` ORDER BY `AFC_ticket`.`date` ASC LIMIT 0 , 3");
                             while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
                               $id = $row['id'];
                               $date = str_replace(array('-', '-'), array('年', '月'), $row['date']) . '日';
@@ -51,7 +70,7 @@ include("../common/php/header.php")?>
                               } else{
                                   $image = '<div class="bg-img" style="background-image:url(../manage/event/register/images/no-img.png)"></div>';
                               }
-                              echo '<div class="event-block">
+                              echo '<div class="event-block fade">
                                       <div class="img-box">'.$image.'</div>
                                       <div class="date">'.$date.'</div>
                                       <div class="event-txt">'.$event.'</div>
@@ -72,10 +91,12 @@ include("../common/php/header.php")?>
                          ?>
                 </div>
             </form>
+            <div id="id_number" style="display:none;"><?php echo $all_data_length ?></div>
+            <button id="ajax_show">もっと見る</button>
         </div>
     </div>
 </section>
-
+<script src="./style/js/local.js"></script>
 
 
 

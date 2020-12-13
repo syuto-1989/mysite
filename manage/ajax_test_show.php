@@ -29,7 +29,7 @@ try {
 }
 
 
-$sql = "SELECT * FROM AFC_ticket LIMIT ?";
+$sql = "SELECT * FROM `AFC_ticket` ORDER BY `AFC_ticket`.`date` ASC LIMIT ? , 3";
 $stmt = $dbh->prepare($sql);
 $stmt->bindParam( 1, $num, PDO::PARAM_INT );
 $stmt->execute();
