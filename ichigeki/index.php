@@ -47,7 +47,7 @@ $stmt->execute();
                 $machine_id = $row['machine_id'];
                 $id = $row['id'];
                 $setting_numeber = $row['setting_numeber'];
-                if($row['machine_type'] == 1){
+                if($row['machine_type'] == 0){
                     $machine_type = 'S';
                 } else {
                     $machine_type = 'P';
