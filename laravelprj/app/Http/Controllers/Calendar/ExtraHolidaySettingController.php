@@ -28,10 +28,12 @@ class ExtraHolidaySettingController extends Controller
 			"calendar" => $calendar
 		]);
 	}
+    /*
     public function edit($date_key){
     $date_setings = [];
     $comment = '';
     $date_flag = '';
+    $schedule = '';
     $date = ExtraHoliday::select('date_key')->get();
         foreach($date as $key=>$value) {
             if($date_key == $value['date_key']){
@@ -40,6 +42,8 @@ class ExtraHolidaySettingController extends Controller
                 $date_flag = $date_setings->date_flag;
             }
         }
+    //フォームを表示
+        $calendar = new CalendarFormView($date_key);
                   
 
 		return view('calendar/extra_holiday_setting_edit', [
@@ -47,7 +51,27 @@ class ExtraHolidaySettingController extends Controller
             "date_key" => $date_key,
             "date_setings" => $date_setings,
             "comment" => $comment,
-            "date_flag" => $date_flag
+            "date_flag" => $date_flag,
+            "schedule" => $schedule,
+            "calendar" => $calendar
+		]);
+	}
+    */
+    
+    public function edit($date_key){
+    $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
+    //フォームを表示
+    $calendar = new CalendarFormView($date_key);
+                  
+
+		return view('calendar/extra_holiday_setting_edit', [
+			//"calendar" => $calendar,
+            "date_key" => $date_key,
+            //"date_setings" => $date_setings,
+            //"comment" => $comment,
+            //"date_flag" => $date_flag,
+            "schedules" => $schedules,
+            "calendar" => $calendar
 		]);
 	}
     
@@ -61,6 +85,37 @@ class ExtraHolidaySettingController extends Controller
 		ExtraHoliday::updateExtraHolidayWithMonth($ym, $input);
 		return redirect(route('edit_extra_holiday_setting', [
                     'date_key' => $date_key,
+                ]));
+			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
+			//->withStatus("保存しました");
+	}
+    
+    public function ajax(Request $request){
+       
+        $formdata = $request->all();
+        $hours = $request['schedule_hours']; 
+        $minutes = $request['schedule_minutes']; 
+        $schedule_time = $hours.':'.$minutes.':00';
+        $schedule = $request['schedule_text']; 
+        $date_key = $request['schedule_date_key']; 
+            
+		return response()->json([$formdata]);
+			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
+			//->withStatus("保存しました");
+	}
+    
+    public function schedule_store(Request $request){
+
+        $hours = $request['schedule_hours']; 
+        $minutes = $request['schedule_minutes']; 
+        $schedule_time = $hours.':'.$minutes.':00';
+        $schedule = $request['schedule_text']; 
+        $date_key = $request['date_key']; 
+
+        ExtraHoliday::storeSchedule($date_key, $schedule, $schedule_time);
+
+		return redirect(route('edit_extra_holiday_setting', [
+                   'date_key' => $date_key,
                 ]));
 			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
 			//->withStatus("保存しました");

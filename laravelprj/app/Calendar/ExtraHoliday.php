@@ -12,15 +12,20 @@ class ExtraHoliday extends Model
 	protected $table = "extra_holiday";
 	
 	protected $fillable = [
-		"date_flag",
-		"comment"
+		"date_key",
+		//"date_flag",
+		//"comment",
+		"schedule_comment",
+		"schedule_time",
 	];
+    
 	function isClose(){
 		return $this->date_flag == ExtraHoliday::CLOSE;
 	}
 	function isOpen(){
 		return $this->date_flag == ExtraHoliday::OPEN;
 	}
+    
     
 	/**
 	 * 指定した月の臨時営業・休業を取得する
@@ -30,10 +35,18 @@ class ExtraHoliday extends Model
 		return ExtraHoliday::where("date_key", 'like', $ym . '%')
             ->get()->keyBy("date_key");
 	}
+    public static function storeSchedule($date_key, $schedule, $schedule_time){
+        $schedule_db = new ExtraHoliday();
+        $schedule_db->date_key = $date_key;
+        $schedule_db->schedule_comment = $schedule;
+        $schedule_db->schedule_time = $schedule_time;
+        $schedule_db->save();
+	}
     
 	/**
 	 * 一括で更新する
 	 */
+    
 	public static function updateExtraHolidayWithMonth($ym, $input){
 		
 		$extreaHolidays = self::getExtraHolidayWithMonth($ym);

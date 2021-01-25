@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Calendar\CalendarView;
 use App\Calendar\Output\CalendarOutputView;
-
+use App\Calendar\ExtraHoliday;
 class CalendarController extends Controller
 {
    public function show(Request $request){
@@ -21,8 +21,26 @@ class CalendarController extends Controller
 		if(!$date)$date = time();
        
 		$calendar = new CalendarOutputView($date);
+       
+        $date_key = date("Ymd");
+        $date_today = date("Y年m月d日");
+        $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
 		return view('calendar', [
-			"calendar" => $calendar
+			"calendar" => $calendar,
+			"calendar" => $calendar,
+			"date_today" => $date_today,
+			"schedules" => $schedules
 		]);
+	}
+    public function ajax(Request $request){
+       
+        //$formdata = $request->all();
+        $date_key = $request['schedule_date_key']; 
+        $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
+        
+            
+		return response()->json([$schedules]);
+			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
+			//->withStatus("保存しました");
 	}
 }
