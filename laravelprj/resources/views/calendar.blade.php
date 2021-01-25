@@ -15,6 +15,21 @@
 					{!! $calendar->render() !!}
                </div>
            </div>
+           <div id="schedule">
+               <h1>本日（{{$date_today}}）の予定</h1>
+               @foreach($schedules as $schedule)
+               @php
+                $schedule->schedule_time = substr($schedule->schedule_time, 0, -3);
+               @endphp
+               <div class="scheduleBox">
+                   <div class="time">{{$schedule->schedule_time}}</div>
+                   <div class="schedule">{{$schedule->schedule_comment}}</div>
+                   <div class="delete btn">
+                    <a class="delete" href="">削除</a>
+                   </div>
+               </div>
+               @endforeach
+           </div>
        </div>
    </div>
 </div>

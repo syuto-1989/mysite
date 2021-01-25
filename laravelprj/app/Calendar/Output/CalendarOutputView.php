@@ -27,15 +27,15 @@ class CalendarOutputView extends CalendarView {
 		}
 
 		$html[] = '<td class="'.$day->getClassName().'">';
-        $html[] = '<a href="/extra_holiday_setting/edit/'.$day->getDateKey().'">';
 		$html[] = $day->render();
-
+        $html[] = '<a class="edit" href="/extra_holiday_setting/edit/'.$day->getDateKey().'">編集</a>';
+        $html[] = '<button class="ajaxBtn btn" id="ajaxBtn">表示</button>';
+        $html[] = '<input type="hidden" name="date_key" value="'.$day->getDateKey().'">';
         //コメントを表示
 		if($extraHoliday){
 			$html[] = '<p class="comment">' . e($extraHoliday->comment) . '</p>';
 		}
 
-		$html[] = '</a>';
         $html[] = '</td>';
 
 		return implode("", $html);
