@@ -96,3 +96,19 @@ td.day-blank .btn {
     line-height: 1.4;
     display: block;
 }
+td.today {
+    background: #ffe31b;
+}
+.for_edit {
+    margin: 10px 0;
+}
+.for_edit a {
+    background: #61dac9;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 3px;
+}
+#app .scheduleBox {
+    align-items: flex-start;
+    padding: 10px 0;
+}

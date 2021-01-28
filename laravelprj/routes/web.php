@@ -31,8 +31,13 @@ Route::post('/holiday_setting', 'App\Http\Controllers\Calendar\HolidaySettingCon
 //臨時営業設定
 Route::get('/extra_holiday_setting', 'App\Http\Controllers\Calendar\ExtraHolidaySettingController@form')
     ->name("extra_holiday_setting");
+
 Route::get('/extra_holiday_setting/edit/{date_key}', 'App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit')
     ->name("edit_extra_holiday_setting");  
+
+Route::get('/extra_holiday_setting/delete/{id}', 'App\Http\Controllers\Calendar\ExtraHolidaySettingController@delete')
+    ->name("edit_extra_holiday_delete");  
+
 Route::post('/extra_holiday_setting','App\Http\Controllers\Calendar\ExtraHolidaySettingController@update')
     ->name("update_extra_holiday_setting");
 
@@ -41,3 +46,9 @@ Route::post('/ajax_holiday_setting','App\Http\Controllers\CalendarController@aja
 
 Route::post('/schedule_setting','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_store')
     ->name("schedule_setting");
+
+Route::post('/schedule_setting','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_store')
+    ->name("schedule_setting");
+
+Route::post('/schedule_delete/','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_delete')
+    ->name("schedule_delete");

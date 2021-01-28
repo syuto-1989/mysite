@@ -25,8 +25,13 @@ class CalendarOutputView extends CalendarView {
 				$day->setHoliday(true);
 			}
 		}
+        $todayClass = '';
+        $date_key = $day->getDateKey();
+        if($date_key == date('Ymd')){
+            $todayClass = 'today';
+        }
 
-		$html[] = '<td class="'.$day->getClassName().'">';
+		$html[] = '<td class="'.$day->getClassName().' '.$todayClass.'">';
 		$html[] = $day->render();
         $html[] = '<a class="edit" href="/extra_holiday_setting/edit/'.$day->getDateKey().'">編集</a>';
         $html[] = '<button class="ajaxBtn btn" id="ajaxBtn">表示</button>';

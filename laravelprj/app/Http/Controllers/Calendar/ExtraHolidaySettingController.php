@@ -65,14 +65,19 @@ class ExtraHolidaySettingController extends Controller
                   
 
 		return view('calendar/extra_holiday_setting_edit', [
-			//"calendar" => $calendar,
             "date_key" => $date_key,
-            //"date_setings" => $date_setings,
-            //"comment" => $comment,
-            //"date_flag" => $date_flag,
             "schedules" => $schedules,
             "calendar" => $calendar
 		]);
+	}
+    
+    public function delete(Request $request ,$id){
+    $date_key = ExtraHoliday::getDatekeyById($id);
+    ExtraHoliday::destroy($id);
+    
+    return redirect(route('edit_extra_holiday_setting', [
+                   'date_key' => $date_key,
+                ]));
 	}
     
     

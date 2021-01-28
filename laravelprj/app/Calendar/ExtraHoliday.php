@@ -35,12 +35,19 @@ class ExtraHoliday extends Model
 		return ExtraHoliday::where("date_key", 'like', $ym . '%')
             ->get()->keyBy("date_key");
 	}
+    
     public static function storeSchedule($date_key, $schedule, $schedule_time){
         $schedule_db = new ExtraHoliday();
         $schedule_db->date_key = $date_key;
         $schedule_db->schedule_comment = $schedule;
         $schedule_db->schedule_time = $schedule_time;
         $schedule_db->save();
+	}    
+    
+    public static function getDatekeyById($id){
+         $date_key_data = ExtraHoliday::select('date_key')->where('id', $id)->first();
+         $date_key = $date_key_data->date_key;
+         return $date_key;
 	}
     
 	/**
