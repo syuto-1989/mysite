@@ -64,7 +64,7 @@
                            <div class="time">{{$schedule->schedule_time}}</div>
                            <div class="schedule">{{$schedule->schedule_comment}}</div>
                            <div class="delete btn">
-                            <a class="delete" href="">削除</a>
+                            <a class="delete" href="/extra_holiday_setting/delete/{{$schedule->id}}">削除</a>
                            </div>
                        </div>
                        @endforeach

@@ -29,6 +29,7 @@ class CalendarController extends Controller
 			"calendar" => $calendar,
 			"calendar" => $calendar,
 			"date_today" => $date_today,
+			"date_key" => $date_key,
 			"schedules" => $schedules
 		]);
 	}
@@ -38,6 +39,10 @@ class CalendarController extends Controller
         $date_key = $request['schedule_date_key']; 
         $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
         
+        foreach($schedules as $schedule){
+           $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
+            $schedule->date_key = date('Y年m月d日',  strtotime($schedule->date_key));
+        }
             
 		return response()->json([$schedules]);
 			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
