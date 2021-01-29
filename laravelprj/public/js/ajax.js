@@ -11,7 +11,7 @@ $(".ajaxBtn").click(function () {
     //POST通信
     type: "post", //HTTP通信のメソッドをPOSTで指定
     //ここでデータの送信先URLを指定します。
-    url: "http://localhost:8000/ajax_holiday_setting", //通信先のURL
+    url: "/ajax_holiday_setting", //通信先のURL
     dataType: "json", // データタイプをjsonで指定
     data: {
         schedule_date_key:schedule_date_key,

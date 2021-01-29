@@ -120,4 +120,17 @@ class CalendarView {
 	public function getPreviousMonth(){
 		return $this->carbon->copy()->subMonthsNoOverflow()->format('Y-m');
 	}
+    
+	/**
+	 * 次の日
+	 */
+	public function getNextDay(){
+		return $this->carbon->copy()->addDay()->format('Ymd');
+	}
+	/**
+	 * 前の日
+	 */
+	public function getPreviousDay(){
+		return $this->carbon->copy()->subDay()->format('Ymd');
+	}
 }
