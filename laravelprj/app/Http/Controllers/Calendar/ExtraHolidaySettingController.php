@@ -71,6 +71,7 @@ class ExtraHolidaySettingController extends Controller
 		]);
 	}
     
+    
     public function delete(Request $request ,$id){
     $date_key = ExtraHoliday::getDatekeyById($id);
     ExtraHoliday::destroy($id);
@@ -80,7 +81,7 @@ class ExtraHolidaySettingController extends Controller
                 ]));
 	}
     
-    
+    /*
     public function update(Request $request){
 		$input = $request->get("extra_holiday");
 		$ym = $request->input("ym");
@@ -94,7 +95,7 @@ class ExtraHolidaySettingController extends Controller
 			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
 			//->withStatus("保存しました");
 	}
-    
+    */
     public function ajax(Request $request){
        
         $formdata = $request->all();
@@ -118,6 +119,28 @@ class ExtraHolidaySettingController extends Controller
         $date_key = $request['date_key']; 
 
         ExtraHoliday::storeSchedule($date_key, $schedule, $schedule_time);
+
+		return redirect(route('edit_extra_holiday_setting', [
+                   'date_key' => $date_key,
+                ]));
+			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
+			//->withStatus("保存しました");
+	}
+    public function schedule_update(Request $request){
+        //var_dump($request['id']);
+        //var_dump($request['date_key']);
+        //var_dump($request['schedule_hours']);
+        //var_dump($request['schedule_minutes']);
+        //var_dump($request['schedule_text']);
+        //exit();
+        $id = $request['id'];
+        $hours = $request['schedule_hours']; 
+        $minutes = $request['schedule_minutes']; 
+        $schedule_time = $hours.':'.$minutes.':00';
+        $schedule = $request['schedule_text']; 
+        $date_key = $request['update_date_key']; 
+
+        ExtraHoliday::updateSchedule($schedule, $schedule_time, $id);
 
 		return redirect(route('edit_extra_holiday_setting', [
                    'date_key' => $date_key,

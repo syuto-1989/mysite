@@ -48,4 +48,20 @@ class CalendarController extends Controller
 			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
 			//->withStatus("保存しました");
 	}
+    
+    public function ajax_delete(Request $request){
+        //$formdata = $request->all();
+        //$date_key = $request['schedule_date_key']; 
+        $id = $request['id']; 
+        $schedules = ExtraHoliday::where('id', $id)->get();
+        /*
+        foreach($schedules as $schedule){
+           $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
+            $schedule->date_key = date('Y年m月d日',  strtotime($schedule->date_key));
+        }
+            */
+		return response()->json([$schedules]);
+			//->action("App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit")
+			//->withStatus("保存しました");
+	}
 }

@@ -112,3 +112,16 @@ td.today {
     align-items: flex-start;
     padding: 10px 0;
 }
+button.updateBtn {
+    background: #61dac9;
+    color: #fff;
+    border-radius: 3px;
+    border: none;
+    padding: 3px 10px;
+    width: 100%;
+}
+.editBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

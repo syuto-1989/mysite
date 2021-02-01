@@ -60,13 +60,22 @@
                        @php
                         $schedule->schedule_time = substr($schedule->schedule_time, 0, -3);
                        @endphp
-                       <div class="scheduleBox">
-                           <div class="time">{{$schedule->schedule_time}}</div>
-                           <div class="schedule">{{$schedule->schedule_comment}}</div>
-                           <div class="delete btn">
-                            <a class="delete" href="/extra_holiday_setting/delete/{{$schedule->id}}">削除</a>
+                       <form method="post" action="{{ route('schedule_update') }}">
+						@csrf
+                       <div class="scheduleBox box_{{$schedule->id}}">
+                           <div class="time time_{{$schedule->id}}">{{$schedule->schedule_time}}</div>
+                           <div class="schedule schedule_{{$schedule->id}}">{{$schedule->schedule_comment}}</div>
+                           <div class="editBlock">
+                               <div class="update btn">
+                                <button type="submit" class="updateBtn" value="{{$schedule->id}}">編集</button>
+                               </div>
+                               <div class="delete btn">
+                                <a class="delete" href="/extra_holiday_setting/delete/{{$schedule->id}}">削除</a>
+                               </div>
                            </div>
                        </div>
+                        <input class="updateDateKey" type="hidden" name="update_date_key" value="{{ $date_key }}" />
+                       </form>
                        @endforeach
                    </div>
                     <a href="/" class="btn btn-primary">トップへ</a>

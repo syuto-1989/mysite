@@ -44,6 +44,13 @@ class ExtraHoliday extends Model
         $schedule_db->save();
 	}    
     
+    public static function updateSchedule($schedule, $schedule_time, $id){
+        $schedule_db = ExtraHoliday::where('id', $id)->first();
+        $schedule_db->schedule_comment = $schedule;
+        $schedule_db->schedule_time = $schedule_time;
+        $schedule_db->save();
+	} 
+    
     public static function getDatekeyById($id){
          $date_key_data = ExtraHoliday::select('date_key')->where('id', $id)->first();
          $date_key = $date_key_data->date_key;

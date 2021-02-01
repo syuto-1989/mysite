@@ -47,8 +47,12 @@ Route::post('/ajax_holiday_setting','App\Http\Controllers\CalendarController@aja
 Route::post('/schedule_setting','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_store')
     ->name("schedule_setting");
 
-Route::post('/schedule_setting','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_store')
-    ->name("schedule_setting");
+Route::post('/schedule_update','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_update')
+    ->name("schedule_update");
+
 
 Route::post('/schedule_delete/','App\Http\Controllers\Calendar\ExtraHolidaySettingController@schedule_delete')
     ->name("schedule_delete");
+
+Route::post('/ajax_delete/','App\Http\Controllers\Calendar\CalendarController@ajax_delete')
+    ->name("ajax_delete");
