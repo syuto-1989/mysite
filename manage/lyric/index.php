@@ -27,7 +27,7 @@ if (isset($_POST["delete"])) {
 }
 
 //DB接続
-$mysqli = new mysqli('mysql145.phy.lolipop.lan', 'LAA1126384', 'sitositosito111', 'LAA1126384-syutoito');
+$mysqli = new mysqli('', '', '', '');
 if ($mysqli->connect_error) {
     echo $mysqli->connect_error;
     exit();
