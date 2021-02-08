@@ -1,9 +1,9 @@
 <?php
 
 //ini_set('display_errors', 1);
-$dsn = "mysql:host=mysql145.phy.lolipop.lan; dbname=LAA1126384-syutoito; charset=utf8mb4";
-$username = "LAA1126384";
-$password = "sitositosito111";
+$dsn = "";
+$username = "";
+$password = "";
 
 function h($s){
   return htmlspecialchars($s, ENT_QUOTES, 'utf-8');
