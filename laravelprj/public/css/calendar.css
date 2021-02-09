@@ -135,3 +135,25 @@ button#ajaxDelete {
     color: #fff;
     border: none;
 }
+#schedule .card-body {
+    padding: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+#schedule .timeWrap {
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+#schedule .timeBox {
+    margin-bottom: 10px;
+}
+#schedule .scheduleText span {
+    width: 20%;
+    text-align: center;
+}
+#schedule input#schedule_text {
+    width: 80%;
+}
+#schedule .ajaxStoreBtn {
+    margin: auto;
+}

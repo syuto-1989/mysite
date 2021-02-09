@@ -51,7 +51,27 @@ class CalendarController extends Controller
         $id = $request['id']; 
         $date_key = ExtraHoliday::getDatekeyById($id);
         ExtraHoliday::destroy($id);
-        $schedules = ExtraHoliday::where('date_key', $date_key)->get();
+        $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
+        
+        foreach($schedules as $schedule){
+           $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
+        }
+            
+		return response()->json([$schedules]);
+	}
+    
+    public function ajax_store(Request $request){ 
+        $formdata = $request->all();
+        
+        $hours = $request['schedule_hours']; 
+        $minutes = $request['schedule_minutes']; 
+        $schedule_time = $hours.':'.$minutes.':00';
+        $schedule_text = $request['schedule_text']; 
+        $date_key = $request['date_key']; 
+
+        ExtraHoliday::storeSchedule($date_key, $schedule_text, $schedule_time);
+        
+        $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
         
         foreach($schedules as $schedule){
            $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
