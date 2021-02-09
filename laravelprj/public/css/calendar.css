@@ -157,3 +157,6 @@ button#ajaxDelete {
 #schedule .ajaxStoreBtn {
     margin: auto;
 }
+.calendar table td.active {
+    border: 2px solid #888;
+}

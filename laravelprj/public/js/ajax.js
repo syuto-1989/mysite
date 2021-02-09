@@ -1,4 +1,6 @@
 $(".ajaxBtn").click(function () {
+  $('td').removeClass('active');
+  $(this).parent().addClass('active');
   $.ajaxSetup({
     headers: {
       "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
