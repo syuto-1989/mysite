@@ -56,3 +56,6 @@ Route::post('/schedule_delete/','App\Http\Controllers\Calendar\ExtraHolidaySetti
 
 Route::post('/ajax_delete/','App\Http\Controllers\CalendarController@ajax_delete')
     ->name("ajax_delete");
+
+Route::post('/ajax_store/','App\Http\Controllers\CalendarController@ajax_store')
+    ->name("ajax_store");
