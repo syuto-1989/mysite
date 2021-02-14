@@ -33,10 +33,10 @@ Route::get('/extra_holiday_setting', 'App\Http\Controllers\Calendar\ExtraHoliday
     ->name("extra_holiday_setting");
 
 Route::get('/extra_holiday_setting/edit/{date_key}', 'App\Http\Controllers\Calendar\ExtraHolidaySettingController@edit')
-    ->name("edit_extra_holiday_setting");  
+    ->name("edit_extra_holiday_setting");
 
 Route::get('/extra_holiday_setting/delete/{id}', 'App\Http\Controllers\Calendar\ExtraHolidaySettingController@delete')
-    ->name("edit_extra_holiday_delete");  
+    ->name("edit_extra_holiday_delete");
 
 Route::post('/extra_holiday_setting','App\Http\Controllers\Calendar\ExtraHolidaySettingController@update')
     ->name("update_extra_holiday_setting");
@@ -59,3 +59,9 @@ Route::post('/ajax_delete/','App\Http\Controllers\CalendarController@ajax_delete
 
 Route::post('/ajax_store/','App\Http\Controllers\CalendarController@ajax_store')
     ->name("ajax_store");
+
+Route::post('/ajax_update/','App\Http\Controllers\CalendarController@ajax_update')
+    ->name("ajax_update");
+
+Route::post('/ajax_cancel/','App\Http\Controllers\CalendarController@ajax_cancel')
+        ->name("ajax_cancel");

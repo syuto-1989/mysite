@@ -7,7 +7,7 @@
 .day-sat .day{
 	color: blue;
 }
-.calendar table td {	
+.calendar table td {
 	padding: 3px;
 	border: solid 1px #999;
 }
@@ -159,4 +159,35 @@ button#ajaxDelete {
 }
 .calendar table td.active {
     border: 2px solid #888;
+}
+#scheduleArea .scheduleBox {
+    flex-wrap: wrap;
+}
+#scheduleArea .editBlock {
+    flex-direction: row;
+    align-items: center;
+}
+#scheduleArea .update.btn {
+    padding: 0 10px;
+}
+.updateBtnTop {
+	  background: #61dac9;
+    padding: 0px 10px;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+}
+#scheduleArea .ajaxUpdate {
+    background: #61dac9;
+    padding: 0px 10px;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+}
+#scheduleArea .ajaxCancel {
+    background: #333;
+    padding: 0px 10px;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
 }
