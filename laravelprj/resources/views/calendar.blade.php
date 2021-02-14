@@ -65,14 +65,15 @@
                    @php
                     $schedule->schedule_time = substr($schedule->schedule_time, 0, -3);
                    @endphp
-                   <div class="scheduleBox">
-                       <div class="time">{{$schedule->schedule_time}}</div>
-                       <div class="schedule">{{$schedule->schedule_comment}}</div>
+                   <div class="scheduleBox box_{{$schedule->id}}">
+                       <div class="time time_{{$schedule->id}}">{{$schedule->schedule_time}}</div>
+                       <div class="schedule schedule_{{$schedule->id}}">{{$schedule->schedule_comment}}</div>
                        <div class="delete btn">
                            <button id="ajaxDelete" class="delete ajaxDelete">削除</button>
                            <input type="hidden" name="ajaxDeleteId" value="{{$schedule->id}}">
                            <input type="hidden" name="ajaxDateKey" value="{{$date_key}}">
                        </div>
+                       <div class="update btn"><button type="submit" value="{{$schedule->id}}" class="updateBtnTop">編集</button><input type="hidden" name="update_date_key" value="{{$date_key}}"></div>
                    </div>
                    @endforeach
                @else

@@ -28,7 +28,7 @@ $(".ajaxBtn").click(function () {
           $('#store_date_key').html('<input class="form-control" type="hidden" name="store_date_key" value="' + schedule_date_key + '" />');
           $('.for_edit').html('<div class="for_edit"><a href="/extra_holiday_setting/edit/' + schedule_date_key + '">編集</a></div>');
           for(var i = 0; i < resLength; i++){
-            schedule.push('<div class="scheduleBox"><div class="time">' + res[0][i].schedule_time + '</div><div class="schedule">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ schedule_date_key +'"></div></div>');
+            schedule.push('<div class="scheduleBox box_' + res[0][i].id + '"><div class="time time_' + res[0][i].id + '">' + res[0][i].schedule_time + '</div><div class="schedule schedule_' + res[0][i].id + '">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ schedule_date_key +'"></div><div class="update btn"><button type="submit" value="'+ res[0][i].id +'" class="updateBtnTop">編集</button><input type="hidden" name="update_date_key" value="'+ schedule_date_key +'"></div></div>');
             $('#scheduleArea').html(schedule);
           }
       } else {
@@ -62,7 +62,7 @@ $(document).on("click", ".ajaxDelete", function(){
   });
   var id = $(this).next().val();
   var dateKeyForDelete = $('input[name="ajaxDateKey"]').val();
-  
+
 
   $.ajax({
     //POST通信
@@ -85,7 +85,7 @@ $(document).on("click", ".ajaxDelete", function(){
           for(var i = 0; i < resLength; i++){
             $('#store_date_key').html('<input class="form-control" type="hidden" name="store_date_key" value="' + dateKeyForDelete + '" />');
             //schedule.push('<div class="for_edit"><a href="/extra_holiday_setting/edit/' + dateKeyForDelete + '">編集</a></div>');
-            schedule.push('<div class="scheduleBox"><div class="time">' + res[0][i].schedule_time + '</div><div class="schedule">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ dateKeyForDelete +'"></div></div>');
+            schedule.push('<div class="scheduleBox box_' + res[0][i].id + '"><div class="time time_' + res[0][i].id + '">' + res[0][i].schedule_time + '</div><div class="schedule schedule_' + res[0][i].id + '">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ dateKeyForDelete +'"></div><div class="update btn"><button type="submit" value="'+ res[0][i].id +'" class="updateBtnTop">編集</button><input type="hidden" name="update_date_key" value="'+ dateKeyForDelete +'"></div></div>');
             $('#scheduleArea').html(schedule);
           }
       } else {
@@ -97,7 +97,7 @@ $(document).on("click", ".ajaxDelete", function(){
     .fail((error) => {
       console.log('error.statusText');
     });
-    
+
 });
 
 $(".ajaxStoreBtn").click(function () {
@@ -132,7 +132,7 @@ $(".ajaxStoreBtn").click(function () {
       if(resLength != 0){
           for(var i = 0; i < resLength; i++){
             $('#store_date_key').html('<input class="form-control" type="hidden" name="store_date_key" value="' + store_date_key + '" />');
-            schedule.push('<div class="scheduleBox"><div class="time">' + res[0][i].schedule_time + '</div><div class="schedule">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ store_date_key +'"></div></div>');
+            schedule.push('<div class="scheduleBox box_' + res[0][i].id + '"><div class="time time_' + res[0][i].id + '">' + res[0][i].schedule_time + '</div><div class="schedule schedule_' + res[0][i].id + '">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ store_date_key +'"></div><div class="update btn"><button type="submit" value="'+ res[0][i].id +'" class="updateBtnTop">編集</button><input type="hidden" name="update_date_key" value="'+ store_date_key +'"></div></div>');
             $('#scheduleArea').html(schedule);
           }
       } else {
@@ -148,6 +148,92 @@ $(".ajaxStoreBtn").click(function () {
          schedule.push('<div class="for_edit"><a href="/extra_holiday_setting/edit/' + store_date_key + '">編集</a></div>');
          schedule.push('<p>予定がありません</p>');
           $('#scheduleArea').html(schedule);
+      }
+    })
+    //通信が失敗したとき
+    .fail((error) => {
+      console.log('error.statusText');
+    });
+});
+
+$(document).on("click", ".ajaxUpdate", function(){
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+  });
+  var id = $(this).val();
+  var dateKeyForUpdate = $('input[name="store_date_key"]').val();
+  var update_schedule_hours = $('[name="update_schedule_hours"] option:selected').val();
+  var update_schedule_minutes = $('[name="update_schedule_minutes"] option:selected').val();
+  var update_schedule_text = $('input[name="update_schedule_text"]').val();
+console.log(dateKeyForUpdate);
+
+  $.ajax({
+    //POST通信
+    type: "post", //HTTP通信のメソッドをPOSTで指定
+    //ここでデータの送信先URLを指定します。
+    url: "/ajax_update", //通信先のURL
+    dataType: "json", // データタイプをjsonで指定
+    data: {
+        id:id,
+        date_key:dateKeyForUpdate,
+        schedule_hours:update_schedule_hours,
+        schedule_minutes:update_schedule_minutes,
+        schedule_text:update_schedule_text,
+    }, // serializeしたデータを指定
+  })
+    //通信が成功したとき
+    .then((res) => {
+      console.log(res);
+      var schedule = [];
+      var resLength = res[0].length;
+      console.log(resLength);
+      if(resLength != 0){
+          for(var i = 0; i < resLength; i++){
+            $('#store_date_key').html('<input class="form-control" type="hidden" name="store_date_key" value="' + dateKeyForUpdate + '" />');
+            schedule.push('<div class="scheduleBox box_' + res[0][i].id + '"><div class="time time_' + res[0][i].id + '">' + res[0][i].schedule_time + '</div><div class="schedule schedule_' + res[0][i].id + '">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ dateKeyForUpdate +'"></div><div class="update btn"><button type="submit" value="'+ res[0][i].id +'" class="updateBtnTop">編集</button><input type="hidden" name="update_date_key" value="'+ dateKeyForUpdate +'"></div></div>');
+            $('#scheduleArea').html(schedule);
+          }
+      } else {
+         schedule.push('<p>予定がありません</p>');
+          $('#scheduleArea').html(schedule);
+      }
+    })
+    //通信が失敗したとき
+    .fail((error) => {
+      console.log('error.statusText');
+    });
+});
+
+$(document).on("click", ".ajaxCancel", function(){
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+  });
+  var schedule_date_key = $('input[name="store_date_key"]').val();
+
+  $.ajax({
+    //POST通信
+    type: "post", //HTTP通信のメソッドをPOSTで指定
+    //ここでデータの送信先URLを指定します。
+    url: "/ajax_cancel", //通信先のURL
+    dataType: "json", // データタイプをjsonで指定
+    data: {
+        schedule_date_key:schedule_date_key,
+    }, // serializeしたデータを指定
+  })
+    //通信が成功したとき
+    .then((res) => {
+      var schedule = [];
+      var resLength = res[0].length;
+      console.log(resLength);
+      if(resLength != 0){
+          for(var i = 0; i < resLength; i++){
+            schedule.push('<div class="scheduleBox box_' + res[0][i].id + '"><div class="time time_' + res[0][i].id + '">' + res[0][i].schedule_time + '</div><div class="schedule schedule_' + res[0][i].id + '">' + res[0][i].schedule_comment + '</div><div class="delete btn"><button id="ajaxDelete" class="delete ajaxDelete">削除</button><input type="hidden" name="ajaxDeleteId" value="'+ res[0][i].id +'"><input type="hidden" name="ajaxDateKey" value="'+ schedule_date_key +'"></div><div class="update btn"><button type="submit" value="'+ res[0][i].id +'" class="updateBtnTop">編集</button><input type="hidden" name="update_date_key" value="'+ schedule_date_key +'"></div></div>');
+            $('#scheduleArea').html(schedule);
+          }
       }
     })
     //通信が失敗したとき

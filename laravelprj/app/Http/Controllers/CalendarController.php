@@ -16,12 +16,12 @@ class CalendarController extends Controller
 		}else{
 			$date = null;
 		}
-		
+
 		//取得出来ない時は現在(=今月)を指定する
 		if(!$date)$date = time();
-       
+
 		$calendar = new CalendarOutputView($date);
-       
+
         $date_key = date("Ymd");
         $date_today = date("Y年m月d日");
         $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
@@ -33,50 +33,84 @@ class CalendarController extends Controller
 			"schedules" => $schedules
 		]);
 	}
-    public function ajax(Request $request){
-       
+  public function ajax(Request $request){
+
         //$formdata = $request->all();
-        $date_key = $request['schedule_date_key']; 
+        $date_key = $request['schedule_date_key'];
         $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
-        
+
         foreach($schedules as $schedule){
            $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
            $schedule->date_key = date('Y年m月d日',  strtotime($schedule->date_key));
         }
-            
+
 		return response()->json([$schedules]);
 	}
-    
-    public function ajax_delete(Request $request){ 
-        $id = $request['id']; 
+
+    public function ajax_delete(Request $request){
+        $id = $request['id'];
         $date_key = ExtraHoliday::getDatekeyById($id);
         ExtraHoliday::destroy($id);
         $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
-        
+
         foreach($schedules as $schedule){
            $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
         }
-            
+
 		return response()->json([$schedules]);
 	}
-    
-    public function ajax_store(Request $request){ 
+
+    public function ajax_store(Request $request){
         $formdata = $request->all();
-        
-        $hours = $request['schedule_hours']; 
-        $minutes = $request['schedule_minutes']; 
+
+        $hours = $request['schedule_hours'];
+        $minutes = $request['schedule_minutes'];
         $schedule_time = $hours.':'.$minutes.':00';
-        $schedule_text = $request['schedule_text']; 
-        $date_key = $request['date_key']; 
+        $schedule_text = $request['schedule_text'];
+        $date_key = $request['date_key'];
 
         ExtraHoliday::storeSchedule($date_key, $schedule_text, $schedule_time);
-        
+
         $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
-        
+
         foreach($schedules as $schedule){
            $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
         }
-            
+
 		return response()->json([$schedules]);
 	}
+
+  public function ajax_update(Request $request){
+       // $formdata = $request->all();
+        $id = $request['id'];
+        $hours = $request['schedule_hours'];
+        $minutes = $request['schedule_minutes'];
+        $schedule_time = $hours.':'.$minutes.':00';
+        $schedule_text = $request['schedule_text'];
+        $date_key = $request['date_key'];
+
+        ExtraHoliday::updateSchedule($schedule_text, $schedule_time, $id);
+
+        $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
+
+        foreach($schedules as $schedule){
+           $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
+        }
+
+
+		return response()->json([$schedules]);
+	}
+
+  public function ajax_cancel(Request $request){
+
+      $date_key = $request['schedule_date_key'];
+      $schedules = ExtraHoliday::where('date_key', $date_key)->orderBy('schedule_time', 'asc')->get();
+
+      foreach($schedules as $schedule){
+         $schedule->schedule_time = substr($schedule->schedule_time, 0,5);
+         $schedule->date_key = date('Y年m月d日',  strtotime($schedule->date_key));
+      }
+
+  return response()->json([$schedules]);
+ }
 }
