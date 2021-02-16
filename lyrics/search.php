@@ -1,11 +1,7 @@
 <?php
-session_start();
 require_once('../manage/config.php');
 
-if ($_SESSION != "") {
-	extract($_SESSION);
-}
-
+$title = $_GET['title'];
 
 //DB接続
 try {
@@ -14,8 +10,10 @@ try {
     $msg = $e->getMessage();
 }
 //データ取得
-$stmt = $dbh->query("SELECT * FROM `lyrics` ORDER BY `lyrics`.`album_id` ASC");
-
+//$stmt = $dbh->query("SELECT * FROM `lyrics` ORDER BY `lyrics`.`album_id` ASC");
+$sql = "SELECT * FROM `lyrics` WHERE title LIKE ?";
+$stmt = $dbh->prepare($sql);
+$stmt->execute(array(sprintf('%%%s%%', addcslashes($title, '\_%'))));
 
 /* 配列作成 */
 $album_ay = mkAlbumAy();
@@ -44,7 +42,7 @@ include("../common/php/header.php")?>
 					<div class="titleSearchWrap">
 						<p>タイトルから検索する</p>
 						<form id="titleSearch" action="./search.php" method="get">
-							<input type="text" name="title" value="">
+							<input type="text" name="title" value="<?php echo $title; ?>">
 							<button type="submit">検索する</button>
 						</form>
 					</div>

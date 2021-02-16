@@ -507,5 +507,23 @@ iframe {
 }
 @media (max-width: 750px) {
   .event-block {
-    width: 100%; } }
+    width: 100%; }
+  }
 
+form#titleSearch {
+    margin: 0 0 30px;
+}
+.titleSearchWrap p {
+      text-align: center;
+}
+form#titleSearch input {
+    margin: auto;
+    display: block;
+}
+form#titleSearch button {
+    background: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px auto 0;
+    display: block;
+}
