@@ -1,7 +1,7 @@
 <?php
 require_once('../manage/config.php');
 
-$title = $_GET['title'];
+$album_id = $_GET['album'];
 
 //DB接続
 try {
@@ -10,9 +10,10 @@ try {
     $msg = $e->getMessage();
 }
 //データ取得
-$sql = "SELECT * FROM `lyrics` WHERE title LIKE ?";
+$sql = "SELECT * FROM `lyrics` WHERE album_id = ?";
 $stmt = $dbh->prepare($sql);
-$stmt->execute(array(sprintf('%%%s%%', addcslashes($title, '\_%'))));
+$stmt->bindParam( 1, $album_id, PDO::PARAM_INT );
+$stmt->execute();
 
 /* 配列作成 */
 $album_ay = mkAlbumAy();
@@ -45,13 +46,18 @@ include("../common/php/header.php")?>
 							<button type="submit">検索する</button>
 						</form>
 					</div>
-					<div class="albumSearchWrap">
+          <div class="albumSearchWrap">
 						<p>アルバムから検索する</p>
 						<form id="albumSearch" action="./album.php" method="get">
 							<select name="album" id="album">
 								<?php
 									foreach($album_ay as $key => $value){
-										echo '<option value='.$key.'>'.$value.'</option>';
+                    if($key == $album_id){
+                      $selected = 'selected';
+                    } else {
+                      $selected = '';
+                    }
+										echo '<option value='.$key.' '.$selected.'>'.$value.'</option>';
 									}
 								?>
 							</select>

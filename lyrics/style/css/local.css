@@ -527,3 +527,21 @@ form#titleSearch button {
     margin: 10px auto 0;
     display: block;
 }
+
+form#albumSearch {
+    margin: 0 0 30px;
+}
+.albumSearchWrap p {
+      text-align: center;
+}
+form#albumSearch select {
+    margin: auto;
+    display: block;
+}
+form#albumSearch button {
+    background: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px auto 0;
+    display: block;
+}
