@@ -48,6 +48,19 @@ include("../common/php/header.php")?>
 							<button type="submit">検索する</button>
 						</form>
 					</div>
+					<div class="albumSearchWrap">
+						<p>アルバムから検索する</p>
+						<form id="albumSearch" action="./album.php" method="get">
+							<select name="album" id="album">
+								<?php
+									foreach($album_ay as $key => $value){
+										echo '<option value='.$key.'>'.$value.'</option>';
+									}
+								?>
+							</select>
+							<button type="submit">検索する</button>
+						</form>
+					</div>
             <div class="lyricSelect">
                 <select id="id" name="id">
                     <?php
