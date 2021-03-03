@@ -1,53 +1,33 @@
 (function ($) {
-   $(document).ready(function(){
-  $('.top-slider').slick({
-        autoplay: false,
-        autoplaySpeed: 5000,
-        fade: true,
-        arrows: true,
-        dots: true,
-        speed: 1000,
-      
-     });
-        
+  $('#select_year,#select_month').on({
+      change : function() {
+          // 要素取得と初期化
+          var dateSelect = $('#select_day');
+          dateSelect.empty();
 
-});
-    
+          var year = $('[name=year] option:selected').text();
+          var month = $('#select_month').val();
+          console.log(year);
+          console.log(month);
 
+          // 閏年判定
+          if (2 == month && (0 == year % 400 || (0 == year % 4 && 0 != year % 100))) {
+              var last = 29;
+          } else {
+              var last = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)[month - 1];
+          }
 
-    
-$(function(){
-              
-              $('.slideshow').each(function(i){
-                var $slides = $('.slideshow li'),
-                slidesCount = $slides.length,
-                currentIndex = 0,
-                firstIndex = 0;
-                
-                  
-                $slides.eq(currentIndex).addClass('fadein');
-               setInterval(showNextSlide, 4000,"linear");
-          
-          function showNextSlide(){
-                var nextIndex = (currentIndex + 1) %  slidesCount;
-                $slides.eq(nextIndex).addClass('fadein');
-                 currentIndex = nextIndex;
-              
-                var lastIndex = (firstIndex + 20) %  slidesCount;
-                var fifthIndex = (currentIndex + 4) %  slidesCount;
-                var sixthIndex = (firstIndex + 5) %  slidesCount;
-
-              if($slides.eq(lastIndex).hasClass('fadein')){
-                $slides.removeClass('fadein');
-                  }
+          //  日の要素生成
+          var options = [];
+          last += 1;
+          for (var i = 1; i < last; i++) {
+              var option = $('<option>').attr('value', i).text(i);
+              options.push(option);
+          }
+          dateSelect.append(options);
+      }
+  });
 
 
-
-     
-            }
-
-        });
-    });
-    
 
 })(jQuery)

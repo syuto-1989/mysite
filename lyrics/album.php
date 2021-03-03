@@ -39,17 +39,11 @@ include("../common/php/header.php")?>
               <h1>LYRICS of RADIOHEAD</h1>
               <p>曲を選択してボタンをクリックしてください。</p>
           </div>
-					<div class="titleSearchWrap">
-						<p>タイトルから検索する</p>
-						<form id="titleSearch" action="./search.php" method="get">
-							<input type="text" name="title" value="<?php echo $title; ?>">
-							<button type="submit">検索する</button>
-						</form>
-					</div>
           <div class="albumSearchWrap">
 						<p>アルバムから検索する</p>
 						<form id="albumSearch" action="./album.php" method="get">
 							<select name="album" id="album">
+                <option value="">選択してください</option>
 								<?php
 									foreach($album_ay as $key => $value){
                     if($key == $album_id){
@@ -66,6 +60,7 @@ include("../common/php/header.php")?>
 					</div>
             <div class="lyricSelect">
                 <select id="id" name="id">
+                  <option value="">選択してください</option>
                     <?php
                         while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
                             echo '<option value='.$row['id'].'>'.$row['title'].'</option>';
