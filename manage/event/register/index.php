@@ -56,6 +56,10 @@ if (isset($_POST["reg"])) {
 		$error_ay["price"] = "<span class='console'>入力してください</span>";
 	}
 
+  if ($count == "") {
+  $error_ay["count"] = "<span class='console'>入力してください</span>";
+}
+
   if(!empty($id)){
       //編集の場合
       $sql = "SELECT * FROM `AFC_ticket` WHERE id = $id";
@@ -134,6 +138,7 @@ if (isset($_POST["reg"])) {
         $_SESSION['day'] = $day;
         $_SESSION['event'] = $event;
         $_SESSION['price'] = $price;
+        $_SESSION['count'] = $count;
 
         if(empty($id)){
         //新規の場合
@@ -165,6 +170,7 @@ if(!empty($id)){
         $day = (int)$day;
         $event = $row['event'];
         $price = $row['price'];
+        $count = $row['count'];
         $image = $row['img'];
     }
 }else{
@@ -220,7 +226,7 @@ function getOptionHtmlForYear($master_data_ay, $value,$init="")
 		$key = (string)$key;
 		//print $val;
 		$selected = '';
-		if ($value === $val) {
+		if ($value == $val) {
 			$selected = ' selected';
 		}
 		$html .= "<option value='$key'$selected>$val</option>";
@@ -232,10 +238,13 @@ function getOptionHtmlForYear($master_data_ay, $value,$init="")
 //年配列
 function mkYearAy(){
 $year_ay = array();
-$year_ay[0] = date("Y");
-for($i=1;$i<10;$i++){
-    $year_count = $i.' year';
-    $year_ay[$i] = date("Y", strtotime($year_count));;
+//$year_ay[0] = date("Y");
+$year_ay[0] = 2016;
+$this_year = date("Y");
+$year_diff = $this_year - $year_ay[0];
+$year_plus = $year_diff + 5;
+for($i=1;$i<$year_plus;$i++){
+    $year_ay[$i] = $year_ay[0] + $i;
 }
     return $year_ay;
 }
@@ -286,7 +295,7 @@ include("../../common/php/header.php")?>
         <form action="#pan" method="post" enctype="multipart/form-data">
             <div class="input">
                 <p>年：</p>
-                <select name="year">
+                <select name="year" id="select_year">
                     <?php
                         print getOptionHtmlForYear($year_ay,$year,"選択してください");
                     ?>
@@ -294,7 +303,7 @@ include("../../common/php/header.php")?>
             </div>
             <div class="input">
                 <p>月：</p>
-                <select name="month">
+                <select name="month" id="select_month">
                     <?php
                         print getOptionHtml($month_ay,$month,"選択してください");
                     ?>
@@ -302,7 +311,8 @@ include("../../common/php/header.php")?>
             </div>
             <div class="input">
                 <p>日：</p>
-                <select name="day">
+                <input type="hidden" name="setting_day" value="<?php echo $day; ?>">
+                <select name="day" id="select_day">
                     <?php
                         print getOptionHtml($day_ay,$day,"選択してください");
                     ?>
@@ -325,6 +335,10 @@ include("../../common/php/header.php")?>
                 <p>チケット代：</p>
                 <input type="text" name="price" size="50" value="<?= $price ?>" /><br /><?= $error_ay["price"] ?>
             </div>
+            <div class="input">
+                <p>在庫枚数：</p>
+                <input type="text" name="count" size="50" value="<?= $count ?>" /><br /><?= $error_ay["count"] ?>
+            </div>
             <div class="btn">
                 <input name="reg" type="submit" value="送信" />
             </div>
@@ -340,3 +354,4 @@ include("../../common/php/header.php")?>
 
 
 </main>
+<script src="./style/js/local.js"></script>

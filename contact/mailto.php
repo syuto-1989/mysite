@@ -21,16 +21,20 @@ if (!$rst) {
 
 //配列作成
 $ticket_ay = array();
+$count = '';
 while ($row = $rst->fetch_assoc()) {
 $row['date'] = str_replace('-',  '/', $row['date']);
 $ticket_ay[] = $row['date'] .' '. $row['event'] .' ¥'.$row['price'];
+if($row['id'] == $reserve){
+  $count = $row['count'];
+}
 }
 
 function getReserveEvent($master_data_ay, $value)
 {
 	//0と空を区別するため===で判別するが、文字列と数値が混在するため
 	//valueの値を文字列に統一する
-	$value = (string)$value;     
+	$value = (string)$value;
     $html = '';
 	if($value != ''){
         foreach ($master_data_ay as $key => $val) {
@@ -61,7 +65,7 @@ include("../common/php/header.php")?>
 <main>
 <section id="top">
     <div class="content-wrap">
-        
+
 		<?php
 
             /*送信処理*/
@@ -135,18 +139,30 @@ $inquiry
 
             $header = "From:<". $mail .">";
             $header2 = "From:<". $mailto .">";
- 
+
 			mb_language("Japanese");
 			mb_internal_encoding("UTF-8");
- 
-			if((mb_send_mail($mailto, $subject, $mbody, $header))&&(mb_send_mail($mailto2, $subject2, $mbody2, $header2))){
-				echo "メールを送信しました";
-			} else {
-				echo "メールの送信に失敗しました";
-			}
+      if ($count >= $sheets){
+        $count_diff = $count - $sheets;
+        $sql = "UPDATE AFC_ticket SET count = '$count_diff' WHERE id = $reserve";
+        $res = $mysqli->query($sql);
+        if (!$res) {
+            echo 'system error.';
+            exit(1);
+        }
+
+        $mysqli->close();
+  			if((mb_send_mail($mailto, $subject, $mbody, $header))&&(mb_send_mail($mailto2, $subject2, $mbody2, $header2))){
+  				echo "メールを送信しました";
+  			} else {
+  				echo "メールの送信に失敗しました";
+  			}
+      } else {
+        echo "在庫枚数が足りません";
+      }
 		?>
-        
-        <a href="/contact/index.php">戻る</a>    
+
+        <a href="/contact/index.php">戻る</a>
 
 
     </div>
@@ -156,4 +172,3 @@ $inquiry
 
 
 </main>
-

@@ -52,6 +52,7 @@ include("../common/php/header.php")?>
 						<p>アルバムから検索する</p>
 						<form id="albumSearch" action="./album.php" method="get">
 							<select name="album" id="album">
+								<option value="">選択してください</option>
 								<?php
 									foreach($album_ay as $key => $value){
 										echo '<option value='.$key.'>'.$value.'</option>';
@@ -63,6 +64,7 @@ include("../common/php/header.php")?>
 					</div>
             <div class="lyricSelect">
                 <select id="id" name="id">
+									<option value="">選択してください</option>
                     <?php
                         while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
                             echo '<option value='.$row['id'].'>'.$row['title'].'</option>';

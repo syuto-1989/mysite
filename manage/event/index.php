@@ -73,6 +73,9 @@ include("../common/php/header.php")?>
 <section id="top">
     <div class="content-wrap">
         <div class="top-container ">
+					<div class="ttl mincho">
+							<h1>登録イベント一覧</h1>
+					</div>
             <form action="#pan" method="post">
                 <div class="tb-scroll">
                     <table border="1">
@@ -108,9 +111,14 @@ include("../common/php/header.php")?>
                     </table>
                 </div>
             </form>
-            <div class="btn">
-                <a href="register/index.php">新規登録</a>
-            </div>
+						<div class="flex">
+	            <div class="btn">
+	                <a href="register/index.php">新規登録</a>
+	            </div>
+							<div class="btn">
+	                <a href="/event" target="_blank">イベント予約ページを表示</a>
+	            </div>
+					</div>
             <div class="logout">
                 <h1><?php echo $msg; ?></h1>
                 <?php echo $link; ?>
