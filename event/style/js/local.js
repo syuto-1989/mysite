@@ -23,15 +23,15 @@ $('#ajax_show').on('click',function(){
 
     // 通信が成功した時
     .done( function(data) {
-        
+
         currentNum = offsetNum;
         $.each(data, function(i){
             if(data[i].img.length == 0){
                 data[i].img = '../manage/event/register/images/no-img.png';
             }
-            $('#event').append('<div class="event-block ajax_data_val fade"><div class="img-box"><div class="bg-img" style="background-image:url(../manage/event/register/images/' + data[i].img + ')"></div></div><div class="date">' + data[i].date + '</div><div class="event-txt">' + data[i].event + '</div><div class="price">¥' + data[i].price + '（+1drink）</div><div class="link flex"><div class="reserve"><button name="reserve" type="submit" value="' + data[i].id + '">予約</button></div><div class="detail"><a href="./detail/index.php?id=' + data[i].id + '">詳細</a></div></div></div>');
+            $('#event').append('<div class="event-block ajax_data_val fade"><div class="img-box"><div class="bg-img" style="background-image:url(../manage/event/register/images/' + data[i].img + ')"></div></div><div class="date">' + data[i].date + '</div><div class="event-txt">' + data[i].event + '</div><div class="price">¥' + data[i].price + '（+1drink）</div><div class="link flex"><div class="reserve"><button name="reserve" type="submit" value="' + data[i].id + '">予約</button></div><div class="detail"><a href="./detail/' + data[i].id + '">詳細</a></div></div></div>');
 		});
-        
+
         var dataNum = $('.event-block').length;
         var allNum = $('#id_number').text();
         if (dataNum == allNum) {
@@ -52,6 +52,6 @@ $('#ajax_show').on('click',function(){
 
 
 
-    
+
 
 })(jQuery)

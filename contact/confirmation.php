@@ -5,6 +5,12 @@ if ($_SESSION != "") {
 	extract($_SESSION);
 }
 
+// 二重送信防止用トークンの発行
+$token = uniqid('', true);
+
+//トークンをセッション変数にセット
+$_SESSION['token'] = $token;
+
 //DB接続
 $mysqli = new mysqli('mysql145.phy.lolipop.lan', 'LAA1126384', 'sitositosito111', 'LAA1126384-syutoito');
 if ($mysqli->connect_error) {
@@ -33,7 +39,7 @@ function getReserveEvent($master_data_ay, $value)
 {
 	//0と空を区別するため===で判別するが、文字列と数値が混在するため
 	//valueの値を文字列に統一する
-	$value = (string)$value;     
+	$value = (string)$value;
     $html = '';
 	if($value != ''){
         foreach ($master_data_ay as $key => $val) {
@@ -63,7 +69,7 @@ include("../common/php/header.php")?>
 <main>
 <section id="top">
     <div class="content-wrap">
-        <h2>問合せ内容</h2>    
+        <h2>問合せ内容</h2>
 
         <form action="./mailto.php" method="post">
 
@@ -89,7 +95,7 @@ include("../common/php/header.php")?>
                     <td><?php echo $inquiry; ?></td>
                 </tr>
             </table>
-
+						<input type="hidden" name="token" value="<?php echo $token;?>">
             <input type="submit" value="送信" />
         </form>
     </div>
@@ -99,4 +105,3 @@ include("../common/php/header.php")?>
 
 
 </main>
-
