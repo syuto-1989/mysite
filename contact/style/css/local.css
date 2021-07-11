@@ -384,7 +384,12 @@ input[type="submit"] {
     padding: 3px 0;
     font-weight: bold;
 }
-
+.linkBox {
+    padding: 5px 10px;
+    background: #333;
+    margin: 0 5px;
+    border-radius: 5px;
+}
 @media (max-width:750px){
 form {
     width: 100%;

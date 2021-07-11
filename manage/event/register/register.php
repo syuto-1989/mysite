@@ -93,7 +93,7 @@ if (empty($id)) {
     //新規登録
 
     $sql = "INSERT INTO AFC_ticket (
-        date, event, price, img, create_date
+        date, event, price, img, count, create_date
     ) VALUES (
         '$date', '$event', '$price', '$count', '$image', '$create_date'
     )";

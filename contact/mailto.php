@@ -2,6 +2,23 @@
 session_start();
 extract($_SESSION);
 
+// POSTされたトークンを取得
+if(isset($_POST["token"])){
+  $token = $_POST["token"];
+} else {
+  $token = '';
+}
+
+// セッション変数のトークンを取得
+if(isset($_SESSION["token"])){
+  $session_token = $_SESSION["token"];
+} else {
+  $session_token = '';
+}
+
+// セッション変数のトークンを削除
+unset($_SESSION["token"]);
+
 //DB接続
 $mysqli = new mysqli('mysql145.phy.lolipop.lan', 'LAA1126384', 'sitositosito111', 'LAA1126384-syutoito');
 if ($mysqli->connect_error) {
@@ -142,27 +159,42 @@ $inquiry
 
 			mb_language("Japanese");
 			mb_internal_encoding("UTF-8");
-      if ($count >= $sheets){
-        $count_diff = $count - $sheets;
-        $sql = "UPDATE AFC_ticket SET count = '$count_diff' WHERE id = $reserve";
-        $res = $mysqli->query($sql);
-        if (!$res) {
-            echo 'system error.';
-            exit(1);
-        }
+      // POSTされたトークンとセッション変数のトークンの比較
+      if($token != '' && $token == $session_token) {
+        if ($count >= $sheets){
 
-        $mysqli->close();
-  			if((mb_send_mail($mailto, $subject, $mbody, $header))&&(mb_send_mail($mailto2, $subject2, $mbody2, $header2))){
-  				echo "メールを送信しました";
-  			} else {
-  				echo "メールの送信に失敗しました";
-  			}
-      } else {
-        echo "在庫枚数が足りません";
-      }
+          $count_diff = $count - $sheets;
+          $sql = "UPDATE AFC_ticket SET count = '$count_diff' WHERE id = $reserve";
+          $res = $mysqli->query($sql);
+          if (!$res) {
+              echo 'system error.';
+              exit(1);
+          }
+
+          $mysqli->close();
+    			if((mb_send_mail($mailto, $subject, $mbody, $header))&&(mb_send_mail($mailto2, $subject2, $mbody2, $header2))){
+    				echo "メールを送信しました";
+    			} else {
+    				echo "メールの送信に失敗しました";
+    			}
+        } else {
+          echo "在庫枚数が足りません";
+        }
+    }  else {
+          echo"不正な登録処理です";
+    }
 		?>
 
         <a href="/contact/index.php">戻る</a>
+
+        <div class="flex">
+          <div class="linkBox">
+            <a href="/event/index.php">一覧へ戻る</a>
+          </div>
+          <div class="linkBox">
+            <a href="/event/detail/<?php echo $reserve ?>">詳細へ戻る</a>
+          </div>
+        </div>
 
 
     </div>
