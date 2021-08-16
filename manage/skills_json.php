@@ -65,7 +65,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
 
 //jsonとして出力
-header('Content-type: application/json');
+header('Access-Control-Allow-Origin: *');
 echo json_encode($skills, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
 
 ?>
